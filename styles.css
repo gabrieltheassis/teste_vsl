@@ -9,6 +9,7 @@ video { width: 100%; height: 100%; display: block; object-fit: contain; backgrou
 .play-icon { display: grid; place-items: center; padding-left: 5px; width: 84px; height: 84px; border-radius: 50%; background: #f04444; box-shadow: 0 0 0 12px #f0444412; font-size: 28px; margin-bottom: 30px; }
 .headline { font-size: clamp(20px, 2.5vw, 26px); font-weight: 700; line-height: 1.35; letter-spacing: -.6px; }
 .headline em { font-family: Georgia, serif; color: #e8bcae; font-weight: 400; }
+.intro { margin-top: 20px; font-size: 14px; line-height: 1.5; color: #eee5e3; }
 .sound { margin-top: 20px; font-size: 13px; color: #eee5e3; }
 .bottom { position: absolute; bottom: 0; width: 100%; padding: 44px 24px 22px; background: linear-gradient(transparent, #100d10eb 30%); color: white; text-align: center; }
 #status { font-size: 12px; margin: 0 0 12px; line-height: 1.5; }

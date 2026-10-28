@@ -23,7 +23,7 @@ function render() {
     unlocked = true;
     next.disabled = false;
     status.textContent = 'Pronto! Você já pode continuar';
-    hint.textContent = 'Continue quando quiser';
+    hint.textContent = 'Continue para falar com a nossa equipe.';
   }
 }
 function updateProgress() {
