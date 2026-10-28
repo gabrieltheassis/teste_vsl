@@ -10,7 +10,7 @@ Página estática, sem dependências. No computador, o player 9:16 fica centrali
 
 O botão é liberado depois de assistir os primeiros 50% em velocidade normal. Sem avanço para trechos não vistos, sem contar reprises e com pausa ao sair da aba. O progresso reinicia ao recarregar. O visitante pode pausar e sair a qualquer momento. A trava é de interface: proteção de acesso real à próxima etapa exige validação no servidor.
 
-O botão é liberado aproximadamente aos 20 segundos do vídeo incluído. Configure `nextUrl` antes de publicar para que ele leve ao site desejado.
+O botão é liberado aproximadamente aos 20 segundos do vídeo incluído. O destino `nextUrl` está configurado para o WhatsApp fornecido. A barra vermelha acompanha os 100% do vídeo; o botão fica verde e libera na metade.
 
 ## Verificar
 

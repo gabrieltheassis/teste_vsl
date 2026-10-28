@@ -15,27 +15,35 @@ video.src = config.videoSrc || 'media/video.mp4';
 if (config.poster) video.poster = config.poster;
 
 function render() {
-  const percent = gate.percent(video.duration);
+  const percent = Number.isFinite(video.duration) && video.duration > 0
+    ? Math.min(100, video.currentTime / video.duration * 100) : 0;
   progress.style.width = `${percent}%`;
   bar.setAttribute('aria-valuenow', String(Math.floor(percent)));
-  if (percent >= 100) {
+  if (gate.percent(video.duration) >= 100) {
     unlocked = true;
     next.disabled = false;
     status.textContent = 'Pronto! Você já pode continuar';
     hint.textContent = 'Continue quando quiser';
   }
 }
-video.addEventListener('timeupdate', () => {
+function updateProgress() {
   if (video.seeking) return;
   gate.sample(video.currentTime, performance.now(), !video.paused && !document.hidden);
   render();
-});
+}
+video.addEventListener('timeupdate', updateProgress);
+function animateProgress() {
+  if (!video.paused && !video.ended) updateProgress();
+  requestAnimationFrame(animateProgress);
+}
+requestAnimationFrame(animateProgress);
 video.addEventListener('seeking', () => {
   if (video.currentTime > gate.frontier + 0.15) video.currentTime = gate.frontier;
   gate.reset();
 });
+video.addEventListener('seeked', () => { gate.reset(video.currentTime, performance.now()); render(); });
 video.addEventListener('ratechange', () => { if (video.playbackRate !== 1) video.playbackRate = 1; });
-video.addEventListener('play', () => { gate.reset(); cover.hidden = true; pause.hidden = false; });
+video.addEventListener('play', () => { gate.reset(video.currentTime, performance.now()); cover.hidden = true; pause.hidden = false; });
 video.addEventListener('pause', () => { gate.reset(); cover.hidden = false; pause.hidden = true; });
 video.addEventListener('ended', () => { render(); cover.hidden = false; pause.hidden = true; });
 video.addEventListener('error', () => {

@@ -23,3 +23,16 @@ test('saltos, pausa e reprises não liberam progresso indevido', () => {
   assert.equal(gate.frontier, .25);
   assert.equal(gate.percent(NaN), 0);
 });
+
+ test('intervalos longos de atualização não congelam a contagem', () => {
+  const gate = new WatchGate();
+  gate.reset(0, 0);
+  gate.sample(3, 3000, true);
+  gate.sample(10, 10000, true);
+  assert.equal(gate.frontier, 10);
+  gate.reset(10, 12000);
+  gate.sample(11, 13000, true);
+  assert.equal(gate.frontier, 11);
+  gate.sample(30, 13250, true);
+  assert.equal(gate.frontier, 11);
+});
