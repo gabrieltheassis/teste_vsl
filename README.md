@@ -4,10 +4,9 @@ Página estática, sem dependências. No computador, o player 9:16 fica centrali
 
 ## Configurar
 
-1. O vídeo enviado já está em `bdc/media/video.mp4` (720 × 1280, H.264 com áudio AAC, aproximadamente 38 segundos). Para trocá-lo, substitua esse arquivo.
-2. Edite `bdc/config.js`: `videoSrc` é o caminho do vídeo, `nextUrl` é a URL completa do próximo site e `poster` é uma capa opcional.
-3. A VSL fica em `/bdc`. Na Vercel, somente `/` redireciona com HTTP 301 para `https://iconmitsubishi.com`.
-4. Execute `python3 -m http.server 3000 --bind 127.0.0.1` nesta pasta. Para publicar, envie os arquivos para uma hospedagem estática com HTTPS e suporte a MP4.
+1. O vídeo enviado já está em `media/video.mp4` (720 × 1280, H.264 com áudio AAC, aproximadamente 38 segundos). Para trocá-lo, substitua esse arquivo.
+2. Edite `config.js`: `videoSrc` é o caminho do vídeo, `nextUrl` é a URL completa do próximo site e `poster` é uma capa opcional.
+3. Execute `python3 -m http.server 3000 --bind 0.0.0.0` nesta pasta. Para publicar, envie os arquivos para uma hospedagem estática com HTTPS e suporte a MP4.
 
 O botão é liberado depois de assistir os primeiros 50% em velocidade normal. Sem avanço para trechos não vistos, sem contar reprises e com pausa ao sair da aba. O progresso reinicia ao recarregar. O visitante pode pausar e sair a qualquer momento. A trava é de interface: proteção de acesso real à próxima etapa exige validação no servidor.
 
