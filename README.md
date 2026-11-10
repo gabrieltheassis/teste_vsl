@@ -17,3 +17,5 @@ O botão é liberado aproximadamente aos 19 segundos do vídeo incluído. O dest
 `node --test tests/watch-gate.test.mjs`
 
 Depois de inserir o vídeo, confirme reprodução com som no celular, botão bloqueado antes da metade e redirecionamento após a liberação.
+
+A entrada reproduz uma prévia de até 8 segundos em loop, sem áudio e sem contar para a liberação. Ao clicar em “Clique aqui para escutar”, o vídeo reinicia do zero com áudio e a contagem começa. Se o navegador bloquear autoplay, o clique inicia normalmente.

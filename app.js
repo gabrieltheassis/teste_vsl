@@ -11,6 +11,8 @@ const progress = document.querySelector('#progress');
 const bar = document.querySelector('[role="progressbar"]');
 const gate = new WatchGate();
 let unlocked = false;
+let started = false;
+video.muted = true;
 video.src = config.videoSrc || 'media/video.mp4';
 if (config.poster) video.poster = config.poster;
 
@@ -27,6 +29,10 @@ function render() {
   }
 }
 function updateProgress() {
+  if (!started) {
+    if (video.currentTime >= 8) video.currentTime = 0;
+    return;
+  }
   if (video.seeking) return;
   gate.sample(video.currentTime, performance.now(), !video.paused && !document.hidden);
   render();
@@ -38,12 +44,16 @@ function animateProgress() {
 }
 requestAnimationFrame(animateProgress);
 video.addEventListener('seeking', () => {
+  if (!started) return;
   if (video.currentTime > gate.frontier + 0.15) video.currentTime = gate.frontier;
   gate.reset();
 });
-video.addEventListener('seeked', () => { gate.reset(video.currentTime, performance.now()); render(); });
+video.addEventListener('seeked', () => { if (started) { gate.reset(video.currentTime, performance.now()); render(); } });
 video.addEventListener('ratechange', () => { if (video.playbackRate !== 1) video.playbackRate = 1; });
-video.addEventListener('play', () => { gate.reset(video.currentTime, performance.now()); cover.hidden = true; pause.hidden = false; });
+video.addEventListener('play', () => {
+  if (!started) return;
+  gate.reset(video.currentTime, performance.now()); cover.hidden = true; pause.hidden = false;
+});
 video.addEventListener('pause', () => { gate.reset(); cover.hidden = false; pause.hidden = true; });
 video.addEventListener('ended', () => { render(); cover.hidden = false; pause.hidden = true; });
 video.addEventListener('error', () => {
@@ -52,7 +62,18 @@ video.addEventListener('error', () => {
 });
 document.addEventListener('visibilitychange', () => { if (document.hidden) video.pause(); gate.reset(); });
 cover.addEventListener('click', async () => {
-  try { video.muted = false; await video.play(); }
+  try {
+    if (!started) {
+      video.pause();
+      video.currentTime = 0;
+      started = true;
+      gate.reset(0, performance.now());
+      cover.classList.remove('preview');
+      cover.querySelector('.sound').textContent = 'Toque para continuar assistindo com som';
+    }
+    video.muted = false;
+    await video.play();
+  }
   catch { status.textContent = 'Não foi possível reproduzir. Verifique o vídeo e tente novamente.'; }
 });
 pause.addEventListener('click', () => video.pause());
@@ -64,3 +85,6 @@ next.addEventListener('click', () => {
     window.location.assign(url.href);
   } catch { status.textContent = 'O endereço da próxima etapa ainda não foi configurado.'; }
 });
+
+// Autoplay sem áudio pode ser bloqueado pelo navegador; o convite continua clicável.
+video.play().catch(() => {});
