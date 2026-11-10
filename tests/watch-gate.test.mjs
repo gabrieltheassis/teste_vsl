@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { WatchGate } from '../watch-gate.js';
+import { WatchGate } from '../bdc/watch-gate.js';
 
 test('libera somente ao alcançar metade por reprodução contínua', () => {
   const gate = new WatchGate();
